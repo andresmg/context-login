@@ -1,10 +1,10 @@
-import React, { useState, createContext, useCallback, useContext, useEffect, useMemo } from 'react'
+import React, {useState, createContext, useCallback, useContext, useEffect, useMemo} from 'react'
 
 const AuthContext = createContext()
 
 export const useAuthContext = () => AuthContext
 
-export const AuthContextProvider = ({ children }) => {
+export const AuthContextProvider = ({children}) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
   const login = useCallback(user => {
@@ -17,10 +17,11 @@ export const AuthContextProvider = ({ children }) => {
     setUser(null)
   }, [])
 
-  const value = { user, login, logout }
+  const value = {user, login, logout}
 
   return (
     <AuthContext.Provider value={value}>
+      {console.log(`DESDE EL AUTHCONTEXT: ${user}`)}
       {children}
     </AuthContext.Provider>
   )

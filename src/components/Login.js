@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom';
-import { useAuthContext } from '../contexts/AuthContext';
-import { login } from '../services/ApiClient';
+import React, {useState} from 'react'
+import {Redirect} from 'react-router-dom'
+import {useAuthContext} from '../contexts/AuthContext'
+import {login} from '../services/ApiClient'
 
 const validations = {
   email: v => v.length,
   password: v => v.length
-};
+}
 
 const Login = () => {
   const [state, setState] = useState({
@@ -21,31 +21,31 @@ const Login = () => {
     touch: {},
   })
 
-  const { user } = useAuthContext()
+  const {user} = useAuthContext()
 
   const [loginError, setLoginError] = useState(null)
 
   const authContext = useAuthContext()
 
-  const { data, error, touch } = state
+  const {data, error, touch} = state
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
       const user = await login(data)
-
+      console.log(`DESDE EL FRONTEND user: ${JSON.stringify(user)}`)
       authContext.login(user)
-    } catch(err) {
+    } catch (err) {
       setLoginError(err.response?.data?.message)
     }
-  };
+  }
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const {name, value} = event.target
 
-    const validationFn = validations[name];
-    const isValid = validationFn(value);
+    const validationFn = validations[name]
+    const isValid = validationFn(value)
 
     setState(prev => {
       return {
@@ -55,15 +55,15 @@ const Login = () => {
           [name]: value,
         },
         error: {
-        ...prev.error,
-        [name]: !isValid,
+          ...prev.error,
+          [name]: !isValid,
         }
       }
-    });
-  };
+    })
+  }
 
   const handleBlur = (event) => {
-    const { name } = event.target;
+    const {name} = event.target
 
     setState(prev => {
       return {
@@ -136,7 +136,7 @@ const Login = () => {
         <pre>{JSON.stringify(state, null, " ")}</pre>
       </div>
     </div>
-  );
+  )
 }
 
 export default Login
